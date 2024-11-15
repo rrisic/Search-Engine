@@ -1,0 +1,6 @@
+1. Number of indexed documents:
+55393
+2. Number of unique tokens:
+1194732
+3. Index file size on disk:
+112806.864 KB (112.8 MB)
