@@ -41,11 +41,12 @@ def doc_id_reader(response_ids):
 
     ret_set = set()
     for id in response_ids:
-        ret_set.add(doc_ids[id])
+        ret_set.add(doc_ids[id].strip())
 
     return ret_set
 
 if __name__ == '__main__':
+    print(STEMMER.stem("ACM"))
     index = {}
     with open('./index.txt') as index_file:
         while True:
@@ -56,12 +57,19 @@ if __name__ == '__main__':
             for i in range(1, len(file_info) - 1, 2):
                 index[file_info[0]].add(Posting(file_info[i], file_info[i + 1]))
 
-    query_inp = input("Query: ")
+    while True:
+        query_inp = input("Query: ")
+        if (not query_inp):
+            break
 
-    resp = query(query_inp, index)
-    ret = doc_id_reader(resp)
+        resp = query(query_inp, index)
+        ret = doc_id_reader(resp)
 
-    for a in ret:
-        print(a)
+        count = 0
+        for a in ret:
+            if (count == 5):
+                break
+            print(a)
+            count += 1
 
             
