@@ -1,28 +1,28 @@
 1. cristina lopes results:
-https://www.informatics.uci.edu/2017/01/#content
-https://www.ics.uci.edu/faculty/area/#menu-01
-https://www.informatics.uci.edu/explore/faculty-profiles/#content
 https://www.ics.uci.edu/~hsajnani/
-https://www.informatics.uci.edu/impact/community-engagement/
+http://mondego.ics.uci.edu/
+https://www.informatics.uci.edu/explore/facts-figures/
+https://www.informatics.uci.edu/explore/facts-figures/#content
+https://www.ics.uci.edu/~sjavanma/
 
 2. machine learning results:
-http://archive.ics.uci.edu/ml/machine-learning-databases/temp_restr/
-https://cbcl.ics.uci.edu/doku.php?id=http:www.stanford.edu:boyd:cvxbook:bv_cvxbook.pdf
-https://grape.ics.uci.edu/wiki/public/wiki/cs122b-2016-spring-project2?version=1&format=txt
-https://www.ics.uci.edu/~iftekha/#currentcourse
-https://cml.ics.uci.edu/2014/02/anandkumar-receives-early-career-sloan-research-fellowship/#content
+http://mondego.ics.uci.edu/datasets/maven-contents.txt
+https://cml.ics.uci.edu/category/aiml/page/2/#content
+https://cml.ics.uci.edu/category/aiml/page/2/
+https://cml.ics.uci.edu/category/aiml/
+https://cml.ics.uci.edu/category/aiml/#content
 
 3. ACM results:
-https://ngs.ics.uci.edu/author/ramesh/page/28/
-https://www.ics.uci.edu/~eppstein/pubs/graph-minor.html
-https://grape.ics.uci.edu/wiki/public/wiki/cs222-2017-fall?version=54&format=txt
-https://www.ics.uci.edu/~aburtsev/143A/2018fall/lectures/lecture11-synchronization/lock-free.txt
-https://www.ics.uci.edu/~eppstein/pubs/1993.html
+https://www.ics.uci.edu/~eppstein/pubs/pubs.ff
+https://www.ics.uci.edu/~eppstein/pubs/all.html
+https://www.ics.uci.edu/~kay/courses/131/s04readings.html
+https://www.ics.uci.edu/~eppstein/bibs/eppstein.html
+https://www.ics.uci.edu/~eppstein/pubs/geom-all.html
 
 4. master of software engineering
-https://www.informatics.uci.edu/informatics-team-finalists-for-iconference-lee-dirks-award-for-best-paper/
-https://www.informatics.uci.edu/senior-spotlight-matthew-ardeleanu-exemplifies-perseverance-on-road-to-success/
-https://www.informatics.uci.edu/wired-reddits-manosphere-and-the-challenge-of-quantifying-hate-katherine-lo-quoted/#content
-https://www.informatics.uci.edu/platypus-a-ludicrous-relationship-a-conversation-between-anthropology-and-game-studies-co-authored-by-informatics-ph-d-students/
-https://www.informatics.uci.edu/undergrad/student-profiles/nafiri-kusumakaulika/#content
+http://mondego.ics.uci.edu/datasets/maven-contents.txt
+https://www.ics.uci.edu/~kay/courses/h22/hw/DVD.txt
+https://www.ics.uci.edu/~kay/courses/h22/hw/DVD-random.txt
+https://www.informatics.uci.edu/very-top-footer-menu-items/people/#Affiliated
+https://www.informatics.uci.edu/very-top-footer-menu-items/people/
 
