@@ -4,6 +4,7 @@ import os
 import nltk
 from bs4 import BeautifulSoup
 from nltk.stem.porter import PorterStemmer
+import re
 
 # JSON format : 
 # url:
@@ -11,7 +12,7 @@ from nltk.stem.porter import PorterStemmer
 # encoding:
 
 DEV_DIR = './DEV'
-SESSION_LIMIT = 1000
+SESSION_LIMIT = 12000
 
 
 def main():
@@ -34,7 +35,7 @@ def main():
                     for key in partial_index:
                         PIfile.write(f'{key} ')
                         for posting in partial_index[key]:
-                            PIfile.write(f'{posting._doc_id} {posting._word_count} ')
+                            PIfile.write(f'{posting._doc_id} {posting._word_count} {int(posting._is_special)} ')
                         PIfile.write('\n')
                 session_count = 0
                 partial_index={}
@@ -43,15 +44,29 @@ def main():
                 data = json.load(open_json)
                 soup = BeautifulSoup(data['content'], 'html.parser')
                 text = soup.get_text()
+                headered_specialtext = soup.find_all(re.compile('^h[1-6]$|^strong$|^b$|^title$'))
+                specialtext = []
+                for subtext in headered_specialtext:
+                    if subtext:
+                        subtext = str(subtext) 
+                        specialtext.append(subtext[subtext.find('>') + 1:subtext.rfind('<')])
                 doc_ids[count] = data['url']
                 tokens = nltk.tokenize.RegexpTokenizer(r"[A-Za-z0-9']+").tokenize(text.lower()) # Purposefully includes apostrophe
+
+                if specialtext:
+                    specialtext_tokens = [nltk.tokenize.RegexpTokenizer(r"[A-Za-z0-9']+").tokenize(spec_text.lower()) for spec_text in specialtext]
+                    for token_list in specialtext_tokens:
+                        stemmed_specialtext = [stemmer.stem(token) for token in token_list]
+                else:
+                    stemmed_specialtext = []
+
                 stemmed_tokens = [stemmer.stem(token) for token in tokens]
                 stemmed_tokens_dict = word_count_dict(stemmed_tokens)
                 for token in stemmed_tokens_dict:
                     if token in partial_index:
-                        partial_index[token].add(Posting(count, stemmed_tokens_dict[token]))
+                        partial_index[token].add(Posting(count, stemmed_tokens_dict[token], (token in stemmed_specialtext)))
                     else:
-                        newPost = Posting(count, stemmed_tokens_dict[token])
+                        newPost = Posting(count, stemmed_tokens_dict[token], (token in stemmed_specialtext))
                         partial_index[token] = set()
                         partial_index[token].add(newPost)
     file_name_counter += 1
@@ -59,7 +74,7 @@ def main():
         for key in partial_index:
             PIfile.write(f'{key} ')
             for posting in partial_index[key]:
-                PIfile.write(f'{posting._doc_id} {posting._word_count} ')
+                PIfile.write(f'{posting._doc_id} {posting._word_count} {int(posting._is_special)} ')
             PIfile.write('\n')
     with open('./doc_ids.txt', 'a') as file:
         for key in doc_ids:

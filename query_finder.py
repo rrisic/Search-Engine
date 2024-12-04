@@ -2,7 +2,7 @@ from nltk.stem.porter import PorterStemmer
 from posting import Posting
 import math
 import time
-import csv
+import pickle
 
 STEMMER = PorterStemmer()
 NUM_DOCS = 55393
@@ -67,70 +67,31 @@ def doc_id_reader(response_ids):
     return ret_dict
 
 if __name__ == '__main__':
-    print(STEMMER.stem("ACM"))
-    index = {}
     start_time = time.time()
-    # doc_frequency = dict.fromkeys(range(1000000))
     doc_frequency = {}
 
-
-    '''with open('./index.csv', 'r') as csv_file:
-        reader = csv.reader(csv_file)
-        count = 0
-        for row in reader:
-            print(count)
-            count += 1
-            key = row[0]
-            index[key] = set()
-            for i in range(1, len(row) - 1, 2):
-                index[key].add(Posting(row[i], row[i + 1]))'''
-
-    '''with open('./index.bin', 'rb') as index_file:
-        count = 0
-        while True:
-            print(count)
-            count += 1
-            file_info = index_file.readline().decode('utf-8').split(' ')
-            if (file_info[0] == ''):
-                break
-            index[file_info[0]] = set()
-            doc_frequency[file_info[0]] = 0
-            for i in range(1, len(file_info) - 1, 2):
-                index[file_info[0]].add(Posting(file_info[i], file_info[i + 1]))
-                doc_frequency[file_info[0]] += 1'''
-
-    '''with open('./index.txt', 'r') as index_file:
-        count = 0
-        while True:
-            print(count)
-            count += 1
-            file_info = index_file.readline().split(' ')
-            if (file_info[0] == ''):
-                break
-            index[file_info[0]] = set()
-            doc_frequency[file_info[0]] = 0
-            for i in range(1, len(file_info) - 1, 2):
-                index[file_info[0]].add(Posting(file_info[i], file_info[i + 1]))
-                doc_frequency[file_info[0]] += 1'''
+    index = {}
     
+
+    
+
     with open('./index.txt', 'r') as index_file:
-        count = 0
         total_file_info = index_file.readlines()
         for file_info in total_file_info:
             file_info = file_info.split(' ')
-            print(count)
-            count += 1
             if (file_info[0] == ''):
                 break
             index[file_info[0]] = set()
             doc_frequency[file_info[0]] = 0
-            for i in range(1, len(file_info) - 1, 2):
-                index[file_info[0]].add(Posting(file_info[i], file_info[i + 1]))
+            for i in range(1, len(file_info) - 2, 3):
+                index[file_info[0]].add(Posting(file_info[i], file_info[i + 1], file_info[i + 2]))
                 doc_frequency[file_info[0]] += 1
     
     
+    
+        
     end_time = time.time()
-    print(f'Time taken to create index: {end_time - start_time}')
+    print(f'Time taken to create index: {(end_time - start_time)}')
     print(f'Size of dictionary: {len(index)}')
 
     while True:
