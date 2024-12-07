@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZotSearch</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .header {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-bar {
+            width: 50%;
+            max-width: 600px;
+            padding: 10px 15px;
+            font-size: 18px;
+            border: 2px solid #4CAF50;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .search-bar:focus {
+            border-color: #388E3C;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 18px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #388E3C;
+        }
+
+        .results {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">ZotSearch</div>
+        <form class="search-box" action="/" method="POST">
+            <input class="search-bar" type="text" name="query" placeholder="Search something..." required>
+            <button class="search-button" type="submit">Search</button>
+        </form>
+        <div class="results">
+            {% if results %}
+                <ul>
+                    {% for result in results %}
+                        <li>{{ result }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
