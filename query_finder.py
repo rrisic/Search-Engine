@@ -24,21 +24,27 @@ def process_line(line):
 
 
 
-def query(user_query : str, index, doc_frequencies):
+def query(user_query : str, offsets):
     query_list = user_query.split(" ")
     query_list = [STEMMER.stem(token.lower()) for token in query_list] # need to be stemmed to corresspond with index
-
         
     response_ids = {} # id : tf-idf score
     
     for i in range(0, len(query_list)):
-        if (query_list[i] in index): # should change ordering in future
-            for post in index[query_list[i]]:
-                tf = post._word_count
-                df = doc_frequencies[query_list[i]]
+        if (query_list[i] in offsets and query_list[i]): 
+            with open(f'./Indexes/{query_list[i][0]}.txt') as index_file:
+                index_file.seek(int(offsets[query_list[i]]))
+                line = index_file.readline().strip().split(' ')
+                postings = set()
+                for i in range(1, len(line) - 2, 3):
+                    postings.add(Posting(line[i], line[i+1], line[i+2]))
+                df = len(postings)
+
+            for post in postings:
+                tf = post._word_count * (int(post._is_special) + 1)
                 idf = NUM_DOCS / df
                 log_tf = math.log10(tf) + 1
-                log_idf = math.log2(idf)
+                log_idf = math.log10(idf)
                 tf_idf = log_tf * log_idf
 
                 if (post._doc_id in response_ids):
@@ -75,7 +81,7 @@ if __name__ == '__main__':
 
     
 
-    with open('./index.txt', 'r') as index_file:
+    ''' with open('./index.txt', 'r') as index_file:
         total_file_info = index_file.readlines()
         for file_info in total_file_info:
             file_info = file_info.split(' ')
@@ -86,31 +92,42 @@ if __name__ == '__main__':
             for i in range(1, len(file_info) - 2, 3):
                 index[file_info[0]].add(Posting(file_info[i], file_info[i + 1], file_info[i + 2]))
                 doc_frequency[file_info[0]] += 1
-    
+    '''
+
+    offsets = {}
+    with open('./offsets.txt', 'r') as file:
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            line = line.strip().split(' ')
+            offsets[line[0]] = line[1]
     
     
         
-    end_time = time.time()
-    print(f'Time taken to create index: {(end_time - start_time)}')
-    print(f'Size of dictionary: {len(index)}')
 
     while True:
         query_inp = input("Query: ")
         if (not query_inp):
             break
 
-        resp = query(query_inp, index, doc_frequency)
-        ret = doc_id_reader(resp)
+        start_time = time.time()
 
+        resp = query(query_inp, offsets)
+        ret = doc_id_reader(resp)
         sorted_ret = dict(sorted(ret.items(), key=lambda item: item[1]))
         reversed_sorted_ret = reversed(sorted_ret)
 
         count = 0
         for a in reversed_sorted_ret:
-            if (count == 5):
+            if (count == 10):
                 break
             print(a)
             count += 1
+        
+        end_time = time.time()
+        print(f'Found {len(ret)} file in {(end_time - start_time)} seconds')
+
 
 
             

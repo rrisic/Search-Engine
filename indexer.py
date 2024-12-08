@@ -5,6 +5,7 @@ import nltk
 from bs4 import BeautifulSoup
 from nltk.stem.porter import PorterStemmer
 import re
+from simhash import Simhash
 
 # JSON format : 
 # url:
@@ -13,6 +14,17 @@ import re
 
 DEV_DIR = './DEV'
 SESSION_LIMIT = 12000
+SIMHASH_THRESHOLD = .92
+SEEN_PAGES = list()
+
+
+def is_similar(content_tokens, threshold = SIMHASH_THRESHOLD):
+    new = Simhash(content_tokens)
+    for seen in SEEN_PAGES:
+        if (seen.distance(new) < (1 - threshold)):
+            return True
+    SEEN_PAGES.append(new)
+    return False
 
 
 def main():
@@ -28,6 +40,7 @@ def main():
         for filename in os.listdir(dir):
             file = os.path.join(dir, filename)
             count += 1
+            print(count)
             session_count += 1
             if (session_count == SESSION_LIMIT):
                 file_name_counter += 1
@@ -44,23 +57,30 @@ def main():
                 data = json.load(open_json)
                 soup = BeautifulSoup(data['content'], 'html.parser')
                 text = soup.get_text()
+
                 headered_specialtext = soup.find_all(re.compile('^h[1-6]$|^strong$|^b$|^title$'))
+
+                
                 specialtext = []
                 for subtext in headered_specialtext:
                     if subtext:
                         subtext = str(subtext) 
                         specialtext.append(subtext[subtext.find('>') + 1:subtext.rfind('<')])
                 doc_ids[count] = data['url']
-                tokens = nltk.tokenize.RegexpTokenizer(r"[A-Za-z0-9']+").tokenize(text.lower()) # Purposefully includes apostrophe
+                tokens = nltk.tokenize.RegexpTokenizer(r"[A-Za-z0-9]+(?:'[A-Za-z0-9])?").tokenize(text.lower()) # Purposefully includes apostrophe
 
                 if specialtext:
-                    specialtext_tokens = [nltk.tokenize.RegexpTokenizer(r"[A-Za-z0-9']+").tokenize(spec_text.lower()) for spec_text in specialtext]
+                    specialtext_tokens = [nltk.tokenize.RegexpTokenizer(r"[A-Za-z0-9]+(?:'[A-Za-z0-9])?").tokenize(spec_text.lower()) for spec_text in specialtext]
                     for token_list in specialtext_tokens:
                         stemmed_specialtext = [stemmer.stem(token) for token in token_list]
                 else:
                     stemmed_specialtext = []
 
                 stemmed_tokens = [stemmer.stem(token) for token in tokens]
+
+                if (is_similar(tuple(stemmed_tokens))):
+                    continue
+
                 stemmed_tokens_dict = word_count_dict(stemmed_tokens)
                 for token in stemmed_tokens_dict:
                     if token in partial_index:

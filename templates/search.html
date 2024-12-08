@@ -67,24 +67,66 @@
             font-size: 20px;
             color: #333;
         }
+
+        /* Pagination Button Styles */
+        .pagination {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .pagination a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .pagination a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">ZotSearch</div>
+        
+        <!-- Search Form -->
         <form class="search-box" action="/" method="POST">
             <input class="search-bar" type="text" name="query" placeholder="Search something..." required>
             <button class="search-button" type="submit">Search</button>
         </form>
+
+        <!-- Message Display -->
+        <div class="message">
+            {% if message %}
+                <ul>
+                    <p>{{ message }}</p>
+                </ul>
+            {% endif %}
+        </div>
+        
+        <!-- Results Section -->
         <div class="results">
             {% if results %}
                 <ul>
                     {% for result in results %}
-                        <li>{{ result }}</li>
+                        <li><a href="{{ result }}" target="_blank">{{ result }}</a></li>
                     {% endfor %}
                 </ul>
+            {% else %}
+                <p>No results found.</p>
             {% endif %}
         </div>
+        
+        <!-- Pagination Buttons -->
+        <div class="pagination">
+            {% if has_previous %}
+                <a href="/?offset={{ offset - 10 }}&q={{ user_query }}">Previous</a>
+            {% endif %}
+            {% if has_next %}
+                <a href="/?offset={{ offset + 10 }}&q={{ user_query }}">Next</a>
+            {% endif %}
+        </div>
+        
     </div>
 </body>
 </html>
