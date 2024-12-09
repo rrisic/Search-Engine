@@ -1,0 +1,56 @@
+Query Report
+
+Queries that were worse for runtime performance:
+1. Comprehensive guide to astrophysical phenomena in multi-galactic environments [95ms]
+2. a b c d e f g h i j k l m n o p q r s t u v w x y z [111ms]
+3. Innovations in renewable energy: Solar, wind, and hydroelectric advancements in the 21st century [107ms]
+4. The quick brown fox jumped over the lazy dog [100ms]
+5. 1 2 3 4 5 6 7 8 9 [152ms]
+6. University of California Irvine [154ms]
+
+Queries that were worse for ranking performance:
+1. The best movies of all time 
+2. ICS
+3. how to make it work
+4. what is it like to work at google
+5. a b c d e f g h i j k l m n o p q r s t u v w x y z
+6. UCI
+
+Queries that worked well both for runtime and ranking performance
+1. Research [30ms] 7770 relevant pages
+2. Danger [43ms] 186 relevant pages
+3. Cheese [27ms] 40 relevant pages
+4. French wine [32ms] 194 relevant pages
+5. Ryder Risic [17ms] 2 relevant pages
+6. Evan Velek [40ms] 69 relevant pages
+7. COMPSCI 121 [50ms] 974 relevant pages
+8. AI [31ms] 1298 relevant pages
+9. Information Retrieval [43ms] Top 2 / 13177 results are incredibly relevant
+10. Anteater [26ms] 315 relevant pages
+11. Zotsearch [15ms] no relevant pages
+
+Summary and Analysis:
+Queries that performed poorly based on runtime in our original implementation usually contained many words that 
+were often also a long set of characters. This required our lookup to hit several parts of our index and iteratre 
+over many more words than needed to accomplish a search. In order to hopefully improve runtime for such queries, we 
+decided to begin lookup early after reading the first few characters in each term of the query. That way queries
+that contained long words would execute earlier, and we wouldn't lose any performance or ranking relevance in our 
+shorter queries. Queries containing common words also performed slightly worse in runtime analysis as they end up
+pinging way more documents during lookup than required. We do not eliminate stopwords but we did implement header
+and strong tag tracking in our index so longer queries that contained stopwords did not waste as much time as we 
+focus first on any of the query words that are located somewhere in a header or marked as strong.
+
+Queries that performed poorly in ranking relevance were due to an abundance of stopwords in the query leading to an
+abundance of documents containing query terms. We also noticed ICS and UCI as queries did particularly bad as they
+would return the links that contained the most emails related to the school, not necessarily the most important
+information. To combat this somewhat we implemented a basic page rank system that looks at the hyperlinks associated
+with each document that matches a query term. Queries that contained many words also performed worse as the actual 
+substance of the query diminishes with every word. This effect is amplified if you include many stop words in the
+query and drown out the important words. This still happens in our current implementation, but it was combatted a 
+bit by the previously mentioned system that checks for important words in headers and strong tags.
+
+The queries that work the best are queries that do not contain too many words and the words they do contain are 
+highly specific and able to be accurately represented by our ranking system. For example Anteater is a highly effective
+query as all of its top links are directly related to anteaters, with its number one containing Anteater in a big bold 
+header. This happens because no other query terms exist to drown it out and it is specific enough it will not show up 
+in every ICS page, unlike the ICS and UCI queries. Names are also highly effective at both runtime and relevance in ranking.
