@@ -43,11 +43,10 @@ focus first on any of the query words that are located somewhere in a header or 
 Queries that performed poorly in ranking relevance were due to an abundance of stopwords in the query leading to an
 abundance of documents containing query terms. We also noticed ICS and UCI as queries did particularly bad as they
 would return the links that contained the most emails related to the school, not necessarily the most important
-information. To combat this somewhat we implemented a basic page rank system that looks at the hyperlinks associated
-with each document that matches a query term. Queries that contained many words also performed worse as the actual 
-substance of the query diminishes with every word. This effect is amplified if you include many stop words in the
-query and drown out the important words. This still happens in our current implementation, but it was combatted a 
-bit by the previously mentioned system that checks for important words in headers and strong tags.
+information. Queries that contained many words also performed worse as the actual substance of the query diminishes with 
+every word. This effect is amplified if you include many stop words in the query and drown out the important words. 
+This still happens in our current implementation, but it was combatted a bit by the previously mentioned system 
+that checks for important words in headers and strong tags.
 
 The queries that work the best are queries that do not contain too many words and the words they do contain are 
 highly specific and able to be accurately represented by our ranking system. For example Anteater is a highly effective
